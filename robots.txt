@@ -1,0 +1,11 @@
+# robots.txt for Java Buzz Coffee Shop
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /temp/
+
+# Sitemap location
+Sitemap: https://www.javabuzz.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 10

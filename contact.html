@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Buzz - Contact Us | Get in Touch</title>
+    <meta name="description" content="Contact Java Buzz for inquiries, feedback, or catering services. We'd love to hear from you!">
+    <meta name="keywords" content="contact coffee shop, customer service, coffee inquiries, catering">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .page-header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1422207134147-65fb81f59e38?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 0;
+        }
+
+        .page-header h1 { 
+            font-size: 5rem; 
+            color: var(--cream); 
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .page-header p {
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .contact-container {
+            padding: 5rem 10%;
+            background: var(--cream);
+        }
+        
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        .contact-info {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .contact-info h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-green);
+        }
+        
+        .contact-method {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--off-white);
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+        
+        .contact-method:hover {
+            transform: translateX(10px);
+            background: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .method-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--light-brown);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .method-details h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark-brown);
+        }
+        
+        .method-details p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .contact-form h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-green);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-brown);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--light-brown);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--light-brown) 0%, var(--primary-brown) 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(210, 105, 30, 0.4);
+        }
+        
+        .map-container {
+            margin-top: 2rem;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        #contact-map {
+            height: 400px;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .map-title {
+            font-size: 1.8rem;
+            color: var(--primary-green);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 968px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 3rem; }
+            .page-header p { font-size: 1.4rem; }
+            .contact-info,
+            .contact-form {
+                padding: 2rem;
+            }
+            #contact-map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-mug-hot logo-icon"></i>
+            <span class="logo-text">Java Buzz</span>
+        </div>
+        <div class="hamburger"><i class="fas fa-bars"></i></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="location.html">Location</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="page-header">
+        <div>
+            <h1>Contact Us</h1>
+            <p>We'd love to hear from you! 💌</p>
+        </div>
+    </section>
+
+    <section class="contact-container">
+        <div class="contact-wrapper">
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                
+                <div class="contact-method">
+                    <div class="method-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="method-details">
+                        <h3>Visit Us</h3>
+                        <p>123 Coffee Street<br>Brew City, BC 12345</p>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="method-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="method-details">
+                        <h3>Call Us</h3>
+                        <p>(555) 123-4567<br>Mon-Fri: 7am-8pm</p>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="method-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="method-details">
+                        <h3>Email Us</h3>
+                        <p>hello@javabuzz.com<br>support@javabuzz.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="method-icon"><i class="fas fa-clock"></i></div>
+                    <div class="method-details">
+                        <h3>Hours</h3>
+                        <p>Mon-Fri: 7am - 8pm<br>Sat-Sun: 8am - 9pm</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h2>Send a Message</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="catering">Catering Services</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="careers">Careers</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" required placeholder="Tell us how we can help..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Map Section -->
+        <div class="map-container">
+            <h3 class="map-title">📍 Find Us Here</h3>
+            <div id="contact-map"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Java Buzz</h3>
+                <p>Experience the perfect blend of quality coffee and warm hospitality since 2010.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+                    <a href="https://x.com"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="location.html">Location</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Coffee Street</li>
+                    <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> hello@javabuzz.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Java Buzz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create map
+            const map = L.map('contact-map').setView([40.7128, -74.0060], 15);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Custom coffee icon
+            const coffeeIcon = L.divIcon({
+                html: '<i class="fas fa-mug-hot" style="font-size: 2rem; color: #D2691E;"></i>',
+                className: 'custom-marker',
+                iconSize: [30, 30],
+                popupAnchor: [0, -15]
+            });
+            
+            // Add marker
+            const marker = L.marker([40.7128, -74.0060], { icon: coffeeIcon }).addTo(map);
+            
+            // Add popup
+            marker.bindPopup(`
+                <b>Java Buzz Coffee</b><br>
+                123 Coffee Street<br>
+                ☎ (555) 123-4567<br>
+                🕒 Mon-Fri: 7am-8pm
+            `).openPopup();
+            
+            // Add circle for area
+            L.circle([40.7128, -74.0060], {
+                color: '#D2691E',
+                fillColor: '#FDF5E6',
+                fillOpacity: 0.2,
+                radius: 200
+            }).addTo(map);
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+            this.reset();
+        });
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+        

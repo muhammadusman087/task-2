@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Buzz - Blog | Coffee News & Stories</title>
+    <meta name="description" content="Read the latest coffee articles, brewing tips, and news from Java Buzz. 12 blog posts about coffee culture, recipes, and more.">
+    <meta name="keywords" content="coffee blog, coffee articles, brewing tips, coffee news, latte art">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .page-header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 0;
+        }
+
+        .page-header h1 { 
+            font-size: 5rem; 
+            color: var(--cream); 
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .page-header p {
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .blog-container {
+            padding: 3rem 8%;
+            background: var(--cream);
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .blog-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .blog-category {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.8rem;
+            background: var(--light-brown);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            z-index: 2;
+        }
+        
+        .blog-content {
+            padding: 1.2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .blog-meta {
+            display: flex;
+            gap: 0.8rem;
+            color: #888;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .blog-meta i {
+            margin-right: 0.2rem;
+            color: var(--light-brown);
+            font-size: 0.7rem;
+        }
+        
+        .blog-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-brown);
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        
+        .blog-excerpt {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+        
+        .blog-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 0.8rem;
+            margin-top: auto;
+        }
+        
+        .read-more {
+            color: var(--light-brown);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            color: var(--primary-brown);
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .share-buttons a {
+            color: #888;
+            transition: var(--transition);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--off-white);
+            font-size: 0.8rem;
+        }
+        
+        .share-buttons a:hover {
+            background: var(--light-brown);
+            color: white;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .page-btn:hover,
+        .page-btn.active {
+            background: var(--light-brown);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 3rem; }
+            .page-header p { font-size: 1.4rem; }
+            .blog-container { padding: 2rem 5%; }
+            .blog-grid { grid-template-columns: 1fr; }
+            .blog-image { height: 160px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-mug-hot logo-icon"></i>
+            <span class="logo-text">Java Buzz</span>
+        </div>
+        <div class="hamburger"><i class="fas fa-bars"></i></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="location.html">Location</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="page-header">
+        <div>
+            <h1>Our Coffee Blog</h1>
+            <p>Stories, tips, and coffee adventures 📖</p>
+        </div>
+    </section>
+
+    <section class="blog-container">
+        <div id="blog-grid" class="blog-grid"></div>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Java Buzz</h3>
+                <p>Experience the perfect blend of quality coffee and warm hospitality since 2010.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+                    <a href="https://x.com"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="location.html">Location</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Coffee Street</li>
+                    <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> hello@javabuzz.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Java Buzz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Blog JSON Data - All images are verified working
+        const blogData = [
+            {
+                id: 1,
+                title: "The Art of Pour-Over Coffee",
+                date: "2024-02-15",
+                author: "Mike Chen",
+                excerpt: "Master the perfect pour-over technique with our step-by-step guide. From water temperature to grind size.",
+                image: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Brewing Tips",
+                readTime: "5 min"
+            },
+            {
+                id: 2,
+                title: "Coffee Bean Origins: From Farm to Cup",
+                date: "2024-02-10",
+                author: "Sarah Johnson",
+                excerpt: "Explore the journey of coffee beans from Ethiopian highlands to your morning cup.",
+                image: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Education",
+                readTime: "7 min"
+            },
+            {
+                id: 3,
+                title: "New Winter Menu: Seasonal Specials",
+                date: "2024-02-05",
+                author: "Emma Rodriguez",
+                excerpt: "Introducing our new winter seasonal menu featuring pumpkin spice and peppermint mocha.",
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "News",
+                readTime: "3 min"
+            },
+            {
+                id: 4,
+                title: "Latte Art Tutorial: Master the Rosetta",
+                date: "2024-01-28",
+                author: "David Lee",
+                excerpt: "Learn to create beautiful rosetta patterns in your latte with our expert barista tips.",
+                image: "https://images.unsplash.com/photo-1512568400610-62da28bc8a13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Tutorials",
+                readTime: "6 min"
+            },
+            {
+                id: 5,
+                title: "Sustainable Coffee Practices",
+                date: "2024-01-20",
+                author: "Green Team",
+                excerpt: "How Java Buzz is working with farmers to promote sustainable coffee practices.",
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Sustainability",
+                readTime: "4 min"
+            },
+            {
+                id: 6,
+                title: "Coffee and Health Benefits",
+                date: "2024-01-15",
+                author: "Dr. Lisa Wong",
+                excerpt: "Recent studies show surprising health benefits of moderate coffee consumption.",
+                image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Health",
+                readTime: "8 min"
+            },
+            {
+                id: 7,
+                title: "Perfect Coffee Pairings",
+                date: "2024-01-08",
+                author: "Chef Antonio",
+                excerpt: "Discover which pastries and snacks pair best with different coffee varieties.",
+                image: "https://images.unsplash.com/photo-1509785307050-d4066910ec1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Food",
+                readTime: "5 min"
+            },
+            {
+                id: 8,
+                title: "Cold Brew vs Iced Coffee",
+                date: "2024-01-02",
+                author: "Tom Harris",
+                excerpt: "What's the real difference between cold brew and iced coffee? We break it down.",
+                image: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Brewing",
+                readTime: "6 min"
+            },
+            {
+                id: 9,
+                title: "Meet Our New Head Roaster",
+                date: "2023-12-20",
+                author: "Java Buzz Team",
+                excerpt: "Introducing Maria Santos, our new head roaster, and her vision for our coffee.",
+                image: "https://images.unsplash.com/photo-1534778101976-62847782c213?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "News",
+                readTime: "3 min"
+            },
+            {
+                id: 10,
+                title: "Holiday Gift Guide for Coffee Lovers",
+                date: "2023-12-10",
+                author: "Gift Team",
+                excerpt: "Perfect coffee-themed gifts for the coffee lovers in your life.",
+                image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Lifestyle",
+                readTime: "4 min"
+            },
+            {
+                id: 11,
+                title: "Coffee Shop Etiquette",
+                date: "2023-12-01",
+                author: "Emily White",
+                excerpt: "A friendly guide to coffee shop etiquette for everyone.",
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Lifestyle",
+                readTime: "5 min"
+            },
+            {
+                id: 12,
+                title: "Home Roasting Guide",
+                date: "2023-11-25",
+                author: "Chris Brown",
+                excerpt: "Start roasting coffee beans at home with our beginner's guide.",
+                image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                category: "Tutorials",
+                readTime: "7 min"
+            }
+        ];
+
+        // Render blog posts
+        function renderBlogs() {
+            const blogGrid = document.getElementById('blog-grid');
+            
+            blogGrid.innerHTML = blogData.map(blog => `
+                <div class="blog-card">
+                    <div class="blog-image" style="background-image: url('${blog.image}')">
+                        <span class="blog-category">${blog.category}</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> ${new Date(blog.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                            <span><i class="far fa-user"></i> ${blog.author}</span>
+                            <span><i class="far fa-clock"></i> ${blog.readTime}</span>
+                        </div>
+                        <h3 class="blog-title">${blog.title}</h3>
+                        <p class="blog-excerpt">${blog.excerpt}</p>
+                        <div class="blog-footer">
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            <div class="share-buttons">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Call render function when page loads
+        document.addEventListener('DOMContentLoaded', renderBlogs);
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
